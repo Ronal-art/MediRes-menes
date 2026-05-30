@@ -1,0 +1,776 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <meta name="description" content="MediResúmenes - Apuntes y resúmenes para estudiantes de Medicina Humana. Encuentra material de Medicina Interna, Cirugía, Anatomía, Farmacología y más. Recursos gratuitos para tu carrera.">
+    <meta name="keywords" content="medicina humana, apuntes medicina, resúmenes medicina, medicina interna, cirugía, anatomía, fisiología, estudiante de medicina">
+    <meta name="author" content="Estudiante de Medicina Humana">
+    <meta name="robots" content="index, follow">
+    <title>MediResúmenes | Apuntes de Medicina Interna, Cirugía y más</title>
+    <!-- Google Fonts & Font Awesome -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,600;14..32,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #f0f7fa;
+            color: #1a2c3e;
+            line-height: 1.5;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, #0a2f44 0%, #1b5a6b 100%);
+            color: white;
+            padding: 2rem 0 1.8rem;
+            border-radius: 0 0 2rem 2rem;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+        .header h1 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .header h1 i {
+            font-size: 2.2rem;
+        }
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            margin-top: 8px;
+        }
+        .badge-med {
+            background: #ffb347;
+            color: #2c3e2f;
+            padding: 5px 14px;
+            border-radius: 40px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            display: inline-block;
+            margin-top: 12px;
+        }
+        .badge-med i {
+            margin-right: 6px;
+        }
+
+        /* Toolbar */
+        .toolbar {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            gap: 16px;
+            margin: 32px 0 24px;
+        }
+        .search-box {
+            flex: 2;
+            min-width: 200px;
+            display: flex;
+            background: white;
+            border-radius: 60px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            border: 1px solid #d4e2e8;
+            overflow: hidden;
+        }
+        .search-box i {
+            padding: 12px 16px;
+            color: #54807e;
+        }
+        .search-box input {
+            flex: 1;
+            border: none;
+            padding: 12px 12px 12px 0;
+            font-size: 1rem;
+            outline: none;
+            font-family: inherit;
+        }
+        .filter-cats {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            align-items: center;
+        }
+        .filter-cats select, .admin-toggle-btn {
+            background: white;
+            border: 1px solid #cbdde3;
+            padding: 8px 18px;
+            border-radius: 40px;
+            font-weight: 500;
+            cursor: pointer;
+            font-family: inherit;
+            transition: 0.2s;
+        }
+        .admin-area {
+            display: flex;
+            gap: 12px;
+        }
+
+        .btn-primary {
+            background: #1b6b6e;
+            color: white;
+            border: none;
+            padding: 10px 22px;
+            border-radius: 40px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+            font-family: inherit;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .btn-primary:hover {
+            background: #0e5255;
+            transform: translateY(-2px);
+        }
+        .btn-outline {
+            background: transparent;
+            border: 1px solid #1b6b6e;
+            color: #1b6b6e;
+            padding: 8px 16px;
+            border-radius: 40px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .btn-outline:hover {
+            background: #e0f0ef;
+        }
+        .btn-danger {
+            background: #d9534f;
+            color: white;
+            border: none;
+        }
+        .btn-danger:hover {
+            background: #c9302c;
+        }
+        .btn-sm {
+            padding: 6px 12px;
+            font-size: 0.75rem;
+            border-radius: 30px;
+        }
+
+        /* Grid de notas */
+        .notes-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+            gap: 26px;
+            margin: 30px 0 50px;
+        }
+        .note-card {
+            background: white;
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+            transition: transform 0.2s, box-shadow 0.2s;
+            display: flex;
+            flex-direction: column;
+            border: 1px solid #e2edf2;
+        }
+        .note-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 30px rgba(0, 0, 0, 0.1);
+        }
+        .card-header {
+            padding: 18px 20px 8px 20px;
+            border-bottom: 1px solid #ecf3f6;
+        }
+        .card-header h3 {
+            font-size: 1.35rem;
+            font-weight: 700;
+            color: #124d4b;
+            margin-bottom: 8px;
+        }
+        .category-badge {
+            display: inline-block;
+            background: #e1f0f0;
+            color: #1e6f6c;
+            padding: 4px 12px;
+            border-radius: 30px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            letter-spacing: 0.3px;
+        }
+        .date {
+            font-size: 0.7rem;
+            color: #7997a1;
+            margin-top: 8px;
+        }
+        .card-summary {
+            padding: 16px 20px;
+            flex: 1;
+            color: #2c4b55;
+            font-size: 0.9rem;
+            line-height: 1.45;
+            border-bottom: 1px solid #f0f5f8;
+            max-height: 120px;
+            overflow-y: auto;
+        }
+        .card-actions {
+            padding: 14px 20px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            gap: 8px;
+            background: #fafefd;
+        }
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            background: #f8fafc;
+            border-radius: 40px;
+            color: #5c8e8a;
+        }
+        footer {
+            text-align: center;
+            padding: 30px 20px;
+            border-top: 1px solid #d4e2e8;
+            margin-top: 20px;
+            font-size: 0.85rem;
+            color: #446d79;
+        }
+
+        /* Modales */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            backdrop-filter: blur(3px);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        .modal-content {
+            background: white;
+            max-width: 550px;
+            width: 90%;
+            border-radius: 32px;
+            padding: 28px;
+            box-shadow: 0 25px 40px rgba(0,0,0,0.2);
+            animation: fadeInUp 0.2s ease;
+        }
+        .modal-content h3 {
+            margin-bottom: 18px;
+            font-size: 1.6rem;
+        }
+        .modal-content input, .modal-content textarea, .modal-content select {
+            width: 100%;
+            padding: 12px;
+            margin: 8px 0 16px;
+            border: 1px solid #cbdde3;
+            border-radius: 20px;
+            font-family: inherit;
+            font-size: 0.95rem;
+        }
+        .modal-buttons {
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+            margin-top: 12px;
+        }
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px);}
+            to { opacity: 1; transform: translateY(0);}
+        }
+        .login-panel {
+            background: #f0f6f9;
+            padding: 8px 16px;
+            border-radius: 60px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .login-panel input {
+            padding: 6px 12px;
+            border-radius: 30px;
+            border: 1px solid #b9d3db;
+            font-size: 0.85rem;
+        }
+        .toast-msg {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            background: #1a2c3e;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            z-index: 1100;
+            opacity: 0;
+            transition: 0.2s;
+            pointer-events: none;
+        }
+        @media (max-width: 680px) {
+            .toolbar { flex-direction: column; align-items: stretch; }
+            .admin-area { justify-content: flex-start; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <div class="container">
+        <h1><i class="fas fa-notes-medical"></i> MediResúmenes</h1>
+        <p>Apuntes y resúmenes completos para la carrera de <strong>Medicina Humana</strong> | Especial énfasis en <strong>Medicina Interna</strong> y <strong>Cirugía</strong></p>
+        <div class="badge-med"><i class="fas fa-stethoscope"></i> Material actualizado | Descarga gratuita | Estudio inteligente</div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="toolbar">
+        <div class="search-box">
+            <i class="fas fa-search"></i>
+            <input type="text" id="searchInput" placeholder="Buscar por título, materia o contenido... (ej: cirugía, insuficiencia cardíaca)" autocomplete="off">
+        </div>
+        <div class="filter-cats">
+            <select id="categoryFilter">
+                <option value="all">📚 Todas las materias</option>
+            </select>
+        </div>
+        <div class="admin-area" id="adminArea">
+            <!-- admin UI dinámico -->
+        </div>
+    </div>
+
+    <div id="notesContainer" class="notes-grid">
+        <!-- tarjetas de apuntes -->
+    </div>
+</div>
+
+<footer>
+    <p><i class="fas fa-graduation-cap"></i> MediResúmenes — Comparte conocimiento. Todos los apuntes son creados por un estudiante de medicina humana.</p>
+    <p style="margin-top: 8px;">📌 <strong>SEO ready:</strong> Para que Google indexe tu sitio, súbelo a GitHub Pages, Netlify o cualquier hosting y usa Google Search Console.</p>
+    <p><i class="fas fa-heart" style="color:#ff6b6b;"></i> Medicina Interna · Cirugía · Anatomía · Farmacología · Pediatría · Ginecología · Más</p>
+</footer>
+
+<!-- Modales -->
+<div id="noteModal" class="modal">
+    <div class="modal-content">
+        <h3 id="modalTitle">Nuevo Apunte</h3>
+        <input type="text" id="noteTitle" placeholder="Título (ej. Manejo de la insuficiencia cardíaca)">
+        <input type="text" id="noteCategory" placeholder="Categoría (ej. Medicina Interna, Cirugía)">
+        <textarea id="noteSummary" rows="4" placeholder="Resumen del contenido..."></textarea>
+        <input type="url" id="noteLink" placeholder="Enlace externo (PDF, Google Drive, video) - opcional">
+        <input type="hidden" id="editId" value="">
+        <div class="modal-buttons">
+            <button class="btn-outline" id="closeModalBtn">Cancelar</button>
+            <button class="btn-primary" id="saveNoteBtn">Guardar Apunte</button>
+        </div>
+    </div>
+</div>
+
+<div id="detailModal" class="modal">
+    <div class="modal-content">
+        <h3 id="detailTitle">Detalle del apunte</h3>
+        <p id="detailCategory" style="background:#ecf7f5; border-radius: 20px; padding: 5px 12px; display: inline-block;"></p>
+        <p id="detailSummary" style="margin: 20px 0; line-height: 1.6; white-space: pre-wrap;"></p>
+        <p id="detailLinkArea"></p>
+        <div class="modal-buttons">
+            <button class="btn-outline" id="closeDetailBtn">Cerrar</button>
+        </div>
+    </div>
+</div>
+
+<div id="toastMsg" class="toast-msg">✓</div>
+
+<script>
+    // ---------- DATA MODEL ----------
+    let notes = [];
+    let adminLoggedIn = false;
+    const ADMIN_PASSWORD = "medico2025";  // Cambia esta contraseña en producción
+
+    // DOM elements
+    const notesContainer = document.getElementById('notesContainer');
+    const searchInput = document.getElementById('searchInput');
+    const categoryFilter = document.getElementById('categoryFilter');
+    const adminAreaDiv = document.getElementById('adminArea');
+
+    // Modales
+    const noteModal = document.getElementById('noteModal');
+    const detailModal = document.getElementById('detailModal');
+    const modalTitle = document.getElementById('modalTitle');
+    const noteTitleInput = document.getElementById('noteTitle');
+    const noteCategoryInput = document.getElementById('noteCategory');
+    const noteSummaryInput = document.getElementById('noteSummary');
+    const noteLinkInput = document.getElementById('noteLink');
+    const editIdInput = document.getElementById('editId');
+    const saveNoteBtn = document.getElementById('saveNoteBtn');
+    const closeModalBtn = document.getElementById('closeModalBtn');
+    const closeDetailBtn = document.getElementById('closeDetailBtn');
+    const detailTitleSpan = document.getElementById('detailTitle');
+    const detailCategorySpan = document.getElementById('detailCategory');
+    const detailSummaryP = document.getElementById('detailSummary');
+    const detailLinkArea = document.getElementById('detailLinkArea');
+
+    function showToast(msg, isError = false) {
+        const toast = document.getElementById('toastMsg');
+        toast.textContent = msg;
+        toast.style.backgroundColor = isError ? '#c0392b' : '#1c6e6b';
+        toast.style.opacity = '1';
+        setTimeout(() => toast.style.opacity = '0', 2500);
+    }
+
+    function saveNotesToLocal() {
+        localStorage.setItem('mediresumenes_data', JSON.stringify(notes));
+    }
+
+    // Cargar datos iniciales con énfasis en Medicina Interna y Cirugía
+    function loadInitialNotes() {
+        const stored = localStorage.getItem('mediresumenes_data');
+        if (stored) {
+            notes = JSON.parse(stored);
+        } else {
+            notes = [
+                {
+                    id: Date.now() + 101,
+                    title: "Insuficiencia Cardíaca: Diagnóstico y tratamiento según guías 2025",
+                    category: "Medicina Interna",
+                    summary: "Clasificación según FEVI. Fármacos: IECAS, betabloqueadores, antagonistas de aldosterona, iSGLT2. Manejo de exacerbaciones agudas. Criterios de descompensación y pronóstico.",
+                    link: "https://www.example.com/ic-guia.pdf",
+                    date: new Date().toLocaleDateString()
+                },
+                {
+                    id: Date.now() + 102,
+                    title: "Síndrome Coronario Agudo: IAM con y sin elevación del ST",
+                    category: "Medicina Interna",
+                    summary: "Algoritmo diagnóstico con troponinas, ECG. Tratamiento: antiagregantes, anticoagulantes, revascularización (ICP vs fibrinólisis). Prevención secundaria.",
+                    link: "",
+                    date: new Date().toLocaleDateString()
+                },
+                {
+                    id: Date.now() + 103,
+                    title: "Apendicitis Aguda: Clínica, escalas diagnósticas y manejo quirúrgico",
+                    category: "Cirugía",
+                    summary: "Cuadro clínico clásico (dolor en fosa ilíaca derecha, signos de irritación peritoneal). Escala de Alvarado. Tratamiento: apendicectomía abierta o laparoscópica, antibióticos perioperatorios.",
+                    link: "https://www.example.com/apendicitis-cirugia",
+                    date: new Date().toLocaleDateString()
+                },
+                {
+                    id: Date.now() + 104,
+                    title: "Colelitiasis y Colecistitis Aguda: abordaje integral",
+                    category: "Cirugía",
+                    summary: "Factores de riesgo, diagnóstico por imagen (ecografía). Complicaciones: coledocolitiasis, colangitis. Tratamiento: colecistectomía laparoscópica, manejo de vía biliar.",
+                    link: "",
+                    date: new Date().toLocaleDateString()
+                },
+                {
+                    id: Date.now() + 105,
+                    title: "Anatomía del abdomen: topografía quirúrgica",
+                    category: "Anatomía",
+                    summary: "Cuadrantes, regiones abdominales. Relación de órganos, irrigación (tronco celíaco, mesentérica superior e inferior). Incisiones quirúrgicas más frecuentes.",
+                    link: "",
+                    date: new Date().toLocaleDateString()
+                },
+                {
+                    id: Date.now() + 106,
+                    title: "Farmacología de antibióticos en infecciones intraabdominales",
+                    category: "Farmacología",
+                    summary: "Cobertura empírica: Piperacilina-tazobactam, carbapenémicos, metronidazol + cefalosporinas. Resistencia bacteriana y duración del tratamiento.",
+                    link: "",
+                    date: new Date().toLocaleDateString()
+                },
+                {
+                    id: Date.now() + 107,
+                    title: "Neumonía Adquirida en la Comunidad: Manejo según CURB-65",
+                    category: "Medicina Interna",
+                    summary: "Etiología, cuadro clínico, radiografía de tórax. Antibióticos ambulatorios vs hospitalarios. Escalas de gravedad y criterios de ingreso a UCI.",
+                    link: "",
+                    date: new Date().toLocaleDateString()
+                },
+                {
+                    id: Date.now() + 108,
+                    title: "Hernias de la pared abdominal: inguinales, femorales y eventraciones",
+                    category: "Cirugía",
+                    summary: "Clasificación de Nyhus, maniobras de reducción. Técnicas de reparación (Lichtenstein, laparoscópica). Complicaciones: incarceración, estrangulación.",
+                    link: "",
+                    date: new Date().toLocaleDateString()
+                }
+            ];
+            saveNotesToLocal();
+        }
+        notes.forEach(n => { if (!n.date) n.date = new Date().toLocaleDateString(); });
+        saveNotesToLocal();
+    }
+
+    function updateCategoryFilter() {
+        const catsSet = new Set(notes.map(n => n.category).filter(c => c && c.trim() !== ""));
+        let options = `<option value="all">📚 Todas las materias</option>`;
+        Array.from(catsSet).sort().forEach(cat => {
+            options += `<option value="${cat.replace(/"/g, '&quot;')}">📖 ${cat}</option>`;
+        });
+        categoryFilter.innerHTML = options;
+    }
+
+    function escapeHtml(str) {
+        if (!str) return '';
+        return str.replace(/[&<>]/g, function(m) {
+            if (m === '&') return '&amp;';
+            if (m === '<') return '&lt;';
+            if (m === '>') return '&gt;';
+            return m;
+        });
+    }
+
+    function renderNotes() {
+        const searchTerm = searchInput.value.toLowerCase();
+        const selectedCat = categoryFilter.value;
+        let filtered = notes.filter(note => {
+            const matchSearch = note.title.toLowerCase().includes(searchTerm) ||
+                                note.summary.toLowerCase().includes(searchTerm) ||
+                                note.category.toLowerCase().includes(searchTerm);
+            const matchCat = (selectedCat === 'all') || (note.category === selectedCat);
+            return matchSearch && matchCat;
+        });
+
+        if (filtered.length === 0) {
+            notesContainer.innerHTML = `<div class="empty-state"><i class="fas fa-folder-open" style="font-size: 3rem; opacity: 0.5;"></i><p style="margin-top: 16px;">No hay apuntes con esos filtros.<br>${adminLoggedIn ? '¡Crea uno nuevo!' : 'Inicia sesión como administrador para agregar contenido.'}</p></div>`;
+            return;
+        }
+
+        notesContainer.innerHTML = filtered.map(note => `
+            <div class="note-card" data-id="${note.id}">
+                <div class="card-header">
+                    <h3>${escapeHtml(note.title)}</h3>
+                    <span class="category-badge"><i class="fas fa-tag"></i> ${escapeHtml(note.category)}</span>
+                    <div class="date"><i class="far fa-calendar-alt"></i> ${note.date}</div>
+                </div>
+                <div class="card-summary">
+                    ${escapeHtml(note.summary.length > 130 ? note.summary.substring(0, 130) + '...' : note.summary)}
+                </div>
+                <div class="card-actions">
+                    <button class="btn-outline btn-sm view-detail" data-id="${note.id}"><i class="fas fa-eye"></i> Ver</button>
+                    ${adminLoggedIn ? `
+                        <button class="btn-outline btn-sm edit-note" data-id="${note.id}"><i class="fas fa-edit"></i> Editar</button>
+                        <button class="btn-danger btn-sm delete-note" data-id="${note.id}"><i class="fas fa-trash-alt"></i> Eliminar</button>
+                    ` : ''}
+                    ${note.link && note.link.trim() !== "" ? `<a href="${escapeHtml(note.link)}" target="_blank" class="btn-primary btn-sm" style="padding:4px 12px; text-decoration:none;"><i class="fas fa-download"></i> Recurso</a>` : ''}
+                </div>
+            </div>
+        `).join('');
+
+        // Eventos a botones dinámicos
+        document.querySelectorAll('.view-detail').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const id = parseInt(btn.getAttribute('data-id'));
+                showDetailNote(id);
+            });
+        });
+        if (adminLoggedIn) {
+            document.querySelectorAll('.edit-note').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const id = parseInt(btn.getAttribute('data-id'));
+                    openEditModal(id);
+                });
+            });
+            document.querySelectorAll('.delete-note').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const id = parseInt(btn.getAttribute('data-id'));
+                    if (confirm('¿Eliminar este apunte de forma permanente?')) {
+                        notes = notes.filter(n => n.id !== id);
+                        saveNotesToLocal();
+                        renderNotes();
+                        updateCategoryFilter();
+                        showToast('Apunte eliminado');
+                    }
+                });
+            });
+        }
+    }
+
+    function showDetailNote(id) {
+        const note = notes.find(n => n.id === id);
+        if (!note) return;
+        detailTitleSpan.innerText = note.title;
+        detailCategorySpan.innerHTML = `<i class="fas fa-folder-open"></i> ${escapeHtml(note.category)}`;
+        detailSummaryP.innerText = note.summary;
+        if (note.link && note.link.trim() !== "") {
+            detailLinkArea.innerHTML = `<i class="fas fa-link"></i> Enlace externo: <a href="${escapeHtml(note.link)}" target="_blank" style="color:#1b6b6e;">${escapeHtml(note.link.length > 60 ? note.link.substring(0,60)+'...' : note.link)}</a>`;
+        } else {
+            detailLinkArea.innerHTML = '<i class="fas fa-paperclip"></i> Sin enlace adicional.';
+        }
+        detailModal.style.display = 'flex';
+    }
+
+    function openAddModal() {
+        modalTitle.innerText = "➕ Nuevo Apunte de Medicina";
+        noteTitleInput.value = "";
+        noteCategoryInput.value = "";
+        noteSummaryInput.value = "";
+        noteLinkInput.value = "";
+        editIdInput.value = "";
+        noteModal.style.display = 'flex';
+    }
+
+    function openEditModal(id) {
+        const note = notes.find(n => n.id === id);
+        if (!note) return;
+        modalTitle.innerText = "✏️ Editar Apunte";
+        noteTitleInput.value = note.title;
+        noteCategoryInput.value = note.category;
+        noteSummaryInput.value = note.summary;
+        noteLinkInput.value = note.link || "";
+        editIdInput.value = note.id;
+        noteModal.style.display = 'flex';
+    }
+
+    function saveNoteFromModal() {
+        const title = noteTitleInput.value.trim();
+        const category = noteCategoryInput.value.trim();
+        const summary = noteSummaryInput.value.trim();
+        const link = noteLinkInput.value.trim();
+        if (!title || !category || !summary) {
+            showToast("❌ Título, categoría y resumen son requeridos", true);
+            return;
+        }
+        const editId = editIdInput.value;
+        if (editId) {
+            const index = notes.findIndex(n => n.id == editId);
+            if (index !== -1) {
+                notes[index] = { ...notes[index], title, category, summary, link, date: new Date().toLocaleDateString() };
+                saveNotesToLocal();
+                showToast("✅ Apunte actualizado");
+            }
+        } else {
+            const newNote = {
+                id: Date.now(),
+                title,
+                category,
+                summary,
+                link: link || "",
+                date: new Date().toLocaleDateString()
+            };
+            notes.push(newNote);
+            saveNotesToLocal();
+            showToast("✨ Nuevo apunte añadido a la biblioteca");
+        }
+        closeModal();
+        renderNotes();
+        updateCategoryFilter();
+    }
+
+    function closeModal() {
+        noteModal.style.display = 'none';
+    }
+
+    // Render admin UI con login/out y export/import
+    function renderAdminUI() {
+        if (adminLoggedIn) {
+            adminAreaDiv.innerHTML = `
+                <div class="login-panel">
+                    <span style="font-weight:600;"><i class="fas fa-user-md"></i> Admin</span>
+                    <button id="logoutAdminBtn" class="btn-outline btn-sm"><i class="fas fa-sign-out-alt"></i> Salir</button>
+                </div>
+                <button id="addNoteBtn" class="btn-primary"><i class="fas fa-plus-circle"></i> Nuevo apunte</button>
+                <button id="exportDataBtn" class="btn-outline btn-sm"><i class="fas fa-download"></i> Exportar JSON</button>
+            `;
+            document.getElementById('addNoteBtn')?.addEventListener('click', openAddModal);
+            document.getElementById('logoutAdminBtn')?.addEventListener('click', () => {
+                adminLoggedIn = false;
+                sessionStorage.removeItem('admin_session_med');
+                renderAdminUI();
+                renderNotes();
+                showToast("Sesión de administrador finalizada");
+            });
+            document.getElementById('exportDataBtn')?.addEventListener('click', () => {
+                const dataStr = JSON.stringify(notes, null, 2);
+                const blob = new Blob([dataStr], {type: "application/json"});
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `mediresumenes_backup_${new Date().toISOString().slice(0,19)}.json`;
+                a.click();
+                URL.revokeObjectURL(url);
+                showToast("Backup exportado");
+            });
+        } else {
+            adminAreaDiv.innerHTML = `
+                <div class="login-panel">
+                    <input type="password" id="adminPasswordInput" placeholder="Contraseña admin" style="width:130px;">
+                    <button id="loginAdminBtn" class="btn-primary btn-sm">Acceder</button>
+                </div>
+                <button id="importBackupBtn" class="btn-outline btn-sm"><i class="fas fa-upload"></i> Importar respaldo</button>
+            `;
+            document.getElementById('loginAdminBtn')?.addEventListener('click', () => {
+                const pwd = document.getElementById('adminPasswordInput').value;
+                if (pwd === ADMIN_PASSWORD) {
+                    adminLoggedIn = true;
+                    sessionStorage.setItem('admin_session_med', 'true');
+                    renderAdminUI();
+                    renderNotes();
+                    showToast("Modo administrador activado. Puedes editar, eliminar o agregar apuntes.");
+                } else {
+                    showToast("Contraseña incorrecta", true);
+                }
+            });
+            document.getElementById('importBackupBtn')?.addEventListener('click', () => {
+                const input = document.createElement('input');
+                input.type = 'file';
+                input.accept = 'application/json';
+                input.onchange = e => {
+                    const file = e.target.files[0];
+                    if (!file) return;
+                    const reader = new FileReader();
+                    reader.onload = ev => {
+                        try {
+                            const imported = JSON.parse(ev.target.result);
+                            if (Array.isArray(imported)) {
+                                notes = imported;
+                                saveNotesToLocal();
+                                renderNotes();
+                                updateCategoryFilter();
+                                showToast("Importación exitosa ✅");
+                            } else throw new Error();
+                        } catch (err) {
+                            showToast("Archivo inválido", true);
+                        }
+                    };
+                    reader.readAsText(file);
+                };
+                input.click();
+            });
+        }
+    }
+
+    // Inicializar
+    function init() {
+        loadInitialNotes();
+        const storedSession = sessionStorage.getItem('admin_session_med');
+        if (storedSession === 'true') adminLoggedIn = true;
+        renderAdminUI();
+        updateCategoryFilter();
+        renderNotes();
+
+        searchInput.addEventListener('input', () => renderNotes());
+        categoryFilter.addEventListener('change', () => renderNotes());
+
+        saveNoteBtn.addEventListener('click', saveNoteFromModal);
+        closeModalBtn.addEventListener('click', closeModal);
+        closeDetailBtn.addEventListener('click', () => { detailModal.style.display = 'none'; });
+        window.addEventListener('click', (e) => {
+            if (e.target === noteModal) closeModal();
+            if (e.target === detailModal) detailModal.style.display = 'none';
+        });
+    }
+
+    init();
+</script>
+</body>
+</html>
